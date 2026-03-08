@@ -1014,9 +1014,7 @@ export default function App() {
   const lessonKey = `${activeModule}-${activeLesson}`;
 
   // Global lesson index for linear numbering
-  let globalLessonIdx = 0;
-  for (let mi = 0; mi < activeModule; mi++) globalLessonIdx += MODULES[mi].lessons.length;
-  globalLessonIdx += activeLesson + 1;
+
 
   return (
     <div style={{
