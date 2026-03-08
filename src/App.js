@@ -1,6 +1,6 @@
-
 import './App.css';
 import { useState, useRef } from "react";
+
 const MODULES = [
   {
     id: 1,
@@ -363,7 +363,7 @@ public class ControllerInput : MonoBehaviour
         exercise: {
           title: "✅ Checkpoint 3-2",
           desc: "La barra de batería cambia de verde a rojo fluidamente al modificar su valor.",
-          verify: "En Play Mode, selecciona HUDManager → In the Inspector busca el script RobotHUD → llama ActualizarBateria(20) desde la Console de Unity: escribe HUDManager.GetComponent<RobotHUD>().ActualizarBateria(20) en la barra de comandos."
+          verify: "En Play Mode, selecciona HUDManager → In the Inspector busca el script RobotHUD → llama ActualizarBateria(20) desde la Console de Unity."
         },
         tip: {
           label: "Color.Lerp explicado",
@@ -714,6 +714,16 @@ public class UDPReceiver : MonoBehaviour
   }
 ];
 
+/* ─── Helpers ─── */
+function parseMarkdown(text) {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fff">$1</strong>')
+    .replace(/`(.+?)`/g, '<code style="background:#1E2D3D;color:#00D4FF;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:12px">$1</code>')
+    .replace(/\n\n/g, '<br/><br/>')
+    .replace(/\n/g, '<br/>');
+}
+
+/* ─── Components ─── */
 function CodeBlock({ code }) {
   const [copied, setCopied] = useState(false);
 
@@ -743,24 +753,25 @@ function CodeBlock({ code }) {
     }}>
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "8px 16px", background: "#161B22", borderBottom: "1px solid #30363D"
+        padding: "8px 12px", background: "#161B22", borderBottom: "1px solid #30363D"
       }}>
-        <span style={{ color: "#8B949E", fontSize: "12px", fontFamily: "monospace" }}>C# · Unity</span>
+        <span style={{ color: "#8B949E", fontSize: "11px", fontFamily: "monospace" }}>C# · Unity</span>
         <button onClick={handleCopy} style={{
           background: copied ? "#238636" : "#21262D",
           border: "1px solid #30363D", borderRadius: "6px",
-          color: "#C9D1D9", padding: "4px 12px", cursor: "pointer",
-          fontSize: "12px", transition: "all 0.2s"
+          color: "#C9D1D9", padding: "4px 10px", cursor: "pointer",
+          fontSize: "11px", transition: "all 0.2s"
         }}>
           {copied ? "✓ Copiado" : "Copiar"}
         </button>
       </div>
       <pre style={{
-        margin: 0, padding: "20px",
+        margin: 0, padding: "16px",
         fontFamily: "'Fira Code', 'Consolas', monospace",
-        fontSize: "13px", lineHeight: "1.7",
+        fontSize: "12px", lineHeight: "1.7",
         color: "#C9D1D9", overflowX: "auto",
-        whiteSpace: "pre"
+        whiteSpace: "pre",
+        WebkitOverflowScrolling: "touch"
       }}
         dangerouslySetInnerHTML={{ __html: highlighted }}
       />
@@ -778,9 +789,9 @@ function TipBox({ tip }) {
     <div style={{
       background: bg, border: `1px solid ${color}`,
       borderLeft: `4px solid ${color}`, borderRadius: "6px",
-      padding: "12px 16px", margin: "16px 0"
+      padding: "12px 14px", margin: "16px 0"
     }}>
-      <span style={{ color, fontWeight: 700, fontSize: "13px" }}>💡 {tip.label}: </span>
+      <div style={{ color, fontWeight: 700, fontSize: "12px", marginBottom: "4px" }}>💡 {tip.label}</div>
       <span style={{ color: "#C8D8E8", fontSize: "13px", lineHeight: "1.6" }}>{tip.text}</span>
     </div>
   );
@@ -788,10 +799,10 @@ function TipBox({ tip }) {
 
 function StepList({ steps }) {
   return (
-    <ol style={{ paddingLeft: "24px", margin: "12px 0" }}>
+    <ol style={{ paddingLeft: "20px", margin: "12px 0" }}>
       {steps.map((step, i) => (
         <li key={i} style={{
-          color: "#C8D8E8", fontSize: "14px", lineHeight: "1.8", marginBottom: "4px"
+          color: "#C8D8E8", fontSize: "13px", lineHeight: "1.8", marginBottom: "4px"
         }}>
           <span dangerouslySetInnerHTML={{
             __html: step.replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fff">$1</strong>')
@@ -808,28 +819,28 @@ function ExerciseBox({ exercise }) {
     <div style={{
       background: done ? "rgba(0,255,159,0.1)" : "rgba(0,212,255,0.08)",
       border: `1px solid ${done ? "#00FF9F" : "#00D4FF"}`,
-      borderRadius: "8px", padding: "16px", margin: "16px 0",
+      borderRadius: "8px", padding: "14px", margin: "16px 0",
       transition: "all 0.3s"
     }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "10px" }}>
         <div style={{ flex: 1 }}>
-          <div style={{ color: done ? "#00FF9F" : "#00D4FF", fontWeight: 700, marginBottom: "6px", fontSize: "14px" }}>
+          <div style={{ color: done ? "#00FF9F" : "#00D4FF", fontWeight: 700, marginBottom: "6px", fontSize: "13px" }}>
             {done ? "✅ " : "🎯 "}{exercise.title}
           </div>
-          <div style={{ color: "#C8D8E8", fontSize: "13px", lineHeight: "1.6", marginBottom: "8px" }}>
+          <div style={{ color: "#C8D8E8", fontSize: "13px", lineHeight: "1.6", marginBottom: "6px" }}>
             {exercise.desc}
           </div>
-          <div style={{ color: "#8899AA", fontSize: "12px", fontStyle: "italic" }}>
+          <div style={{ color: "#8899AA", fontSize: "11px", fontStyle: "italic" }}>
             Verificación: {exercise.verify}
           </div>
         </div>
         <button onClick={() => setDone(!done)} style={{
           background: done ? "#00FF9F" : "transparent",
           border: `2px solid ${done ? "#00FF9F" : "#00D4FF"}`,
-          borderRadius: "50%", width: "32px", height: "32px",
+          borderRadius: "50%", width: "32px", height: "32px", minWidth: "32px",
           cursor: "pointer", flexShrink: 0,
           color: done ? "#0A0E1A" : "#00D4FF",
-          fontSize: "16px", fontWeight: "bold",
+          fontSize: "15px", fontWeight: "bold",
           display: "flex", alignItems: "center", justifyContent: "center"
         }}>
           {done ? "✓" : "○"}
@@ -841,38 +852,30 @@ function ExerciseBox({ exercise }) {
 
 function LessonView({ lesson, moduleColor }) {
   return (
-    <div style={{ padding: "0 4px" }}>
+    <div>
       <div style={{
-        color: moduleColor, fontSize: "11px", fontWeight: 700,
-        letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px"
+        color: moduleColor, fontSize: "10px", fontWeight: 700,
+        letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px"
       }}>
         LECCIÓN
       </div>
       <h2 style={{
-        color: "#FFFFFF", fontSize: "22px", fontWeight: 700,
-        marginBottom: "20px", lineHeight: "1.3"
+        color: "#FFFFFF", fontSize: "20px", fontWeight: 700,
+        marginBottom: "16px", lineHeight: "1.3", margin: "0 0 16px 0"
       }}>
         {lesson.title}
       </h2>
 
       <div style={{
-        color: "#C8D8E8", fontSize: "14px", lineHeight: "1.8",
-        marginBottom: "20px",
-        "& strong": { color: "#fff" }
+        color: "#C8D8E8", fontSize: "14px", lineHeight: "1.8", marginBottom: "20px"
       }}
-        dangerouslySetInnerHTML={{
-          __html: lesson.theory
-            .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#fff">$1</strong>')
-            .replace(/`(.+?)`/g, '<code style="background:#1E2D3D;color:#00D4FF;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:13px">$1</code>')
-            .replace(/\n\n/g, '<br/><br/>')
-            .replace(/\n/g, '<br/>')
-        }}
+        dangerouslySetInnerHTML={{ __html: parseMarkdown(lesson.theory) }}
       />
 
       {lesson.code && <CodeBlock code={lesson.code} />}
 
       <div style={{
-        color: "#8899AA", fontSize: "12px", fontWeight: 700,
+        color: "#8899AA", fontSize: "11px", fontWeight: 700,
         letterSpacing: "1px", textTransform: "uppercase",
         marginBottom: "8px", marginTop: "20px"
       }}>
@@ -886,16 +889,102 @@ function LessonView({ lesson, moduleColor }) {
   );
 }
 
+/* ─── Drawer/Bottom Sheet for mobile ─── */
+function MobileModuleDrawer({ modules, activeModule, activeLesson, completedLessons, onSelect, onClose }) {
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={onClose}
+        style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)",
+          zIndex: 40, backdropFilter: "blur(2px)"
+        }}
+      />
+      {/* Sheet */}
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0,
+        background: "#0D1525", borderTop: "1px solid #1E3350",
+        borderRadius: "16px 16px 0 0",
+        zIndex: 50, maxHeight: "75vh", display: "flex", flexDirection: "column",
+        animation: "slideUp 0.25s ease"
+      }}>
+        <div style={{
+          padding: "12px 20px 8px", display: "flex", justifyContent: "space-between",
+          alignItems: "center", borderBottom: "1px solid #1E3350", flexShrink: 0
+        }}>
+          <span style={{ color: "#fff", fontWeight: 700, fontSize: "15px" }}>Lecciones</span>
+          <button onClick={onClose} style={{
+            background: "#1E3350", border: "none", borderRadius: "50%",
+            width: "28px", height: "28px", color: "#8899AA", cursor: "pointer",
+            fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center"
+          }}>×</button>
+        </div>
+        <div style={{ overflowY: "auto", padding: "8px 0 20px", WebkitOverflowScrolling: "touch" }}>
+          {modules.map((m, mi) => (
+            <div key={mi}>
+              <div style={{
+                padding: "10px 20px 6px",
+                display: "flex", alignItems: "center", gap: "8px"
+              }}>
+                <span style={{ color: m.color, fontSize: "15px" }}>{m.icon}</span>
+                <div>
+                  <div style={{ color: m.color, fontSize: "10px", fontWeight: 700, letterSpacing: "1px" }}>
+                    {m.phase}
+                  </div>
+                  <div style={{ color: "#fff", fontSize: "13px", fontWeight: 600 }}>{m.title}</div>
+                </div>
+              </div>
+              {m.lessons.map((l, li) => {
+                const key = `${mi}-${li}`;
+                const isActive = mi === activeModule && li === activeLesson;
+                const isDone = completedLessons.has(key);
+                return (
+                  <button key={li} onClick={() => { onSelect(mi, li); onClose(); }} style={{
+                    width: "100%", textAlign: "left",
+                    padding: "10px 20px 10px 44px",
+                    background: isActive ? `${m.color}15` : "transparent",
+                    border: "none", borderLeft: isActive ? `3px solid ${m.color}` : "3px solid transparent",
+                    cursor: "pointer", display: "flex", alignItems: "center", gap: "10px",
+                  }}>
+                    <span style={{
+                      width: "20px", height: "20px", borderRadius: "50%",
+                      background: isDone ? m.color : isActive ? `${m.color}30` : "#1E3350",
+                      border: `1px solid ${isDone || isActive ? m.color : "#2A4060"}`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: "10px", color: isDone ? "#0A0E1A" : m.color,
+                      flexShrink: 0, fontWeight: 700
+                    }}>
+                      {isDone ? "✓" : li + 1}
+                    </span>
+                    <span style={{ color: isActive ? "#fff" : "#8899AA", fontSize: "13px", lineHeight: "1.4" }}>
+                      {l.title}
+                    </span>
+                  </button>
+                );
+              })}
+              {mi < modules.length - 1 && (
+                <div style={{ height: "1px", background: "#1E3350", margin: "6px 20px" }} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }`}</style>
+    </>
+  );
+}
 
-function App() {
+/* ─── Main App ─── */
+export default function App() {
   const [activeModule, setActiveModule] = useState(0);
   const [activeLesson, setActiveLesson] = useState(0);
   const [completedLessons, setCompletedLessons] = useState(new Set());
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const contentRef = useRef(null);
 
   const mod = MODULES[activeModule];
   const lesson = mod.lessons[activeLesson];
-
   const totalLessons = MODULES.reduce((a, m) => a + m.lessons.length, 0);
   const progress = Math.round((completedLessons.size / totalLessons) * 100);
 
@@ -915,183 +1004,251 @@ function App() {
     }
   };
 
+  const prevLesson = () => {
+    if (activeLesson > 0) goToLesson(activeModule, activeLesson - 1);
+    else if (activeModule > 0) goToLesson(activeModule - 1, MODULES[activeModule - 1].lessons.length - 1);
+  };
+
+  const isFirst = activeModule === 0 && activeLesson === 0;
+  const isLast = activeModule === MODULES.length - 1 && activeLesson === mod.lessons.length - 1;
   const lessonKey = `${activeModule}-${activeLesson}`;
+
+  // Global lesson index for linear numbering
+  let globalLessonIdx = 0;
+  for (let mi = 0; mi < activeModule; mi++) globalLessonIdx += MODULES[mi].lessons.length;
+  globalLessonIdx += activeLesson + 1;
+
   return (
     <div style={{
-      display: "flex", height: "100vh", background: "#0A0E1A",
+      display: "flex", height: "100dvh", background: "#0A0E1A",
       fontFamily: "'Segoe UI', system-ui, sans-serif",
-      color: "#C8D8E8", overflow: "hidden"
+      color: "#C8D8E8", overflow: "hidden", flexDirection: "column"
     }}>
-      {/* ── SIDEBAR ── */}
-      <div style={{
-        width: "280px", flexShrink: 0, background: "#0D1525",
-        borderRight: "1px solid #1E3350",
-        display: "flex", flexDirection: "column", overflow: "hidden"
-      }}>
-        {/* Logo */}
-        <div style={{
-          padding: "20px 20px 16px",
-          borderBottom: "1px solid #1E3350"
-        }}>
-          <div style={{ fontSize: "11px", color: "#00D4FF", letterSpacing: "3px", fontWeight: 700, marginBottom: "4px" }}>
-            CYBER-ARENA
-          </div>
-          <div style={{ fontSize: "17px", fontWeight: 700, color: "#fff" }}>
-            Ruta Unity
-          </div>
-          <div style={{
-            marginTop: "12px", height: "6px", background: "#1E3350",
-            borderRadius: "3px", overflow: "hidden"
-          }}>
-            <div style={{
-              height: "100%", width: `${progress}%`,
-              background: "linear-gradient(90deg, #00D4FF, #00FF9F)",
-              borderRadius: "3px", transition: "width 0.5s ease"
-            }} />
-          </div>
-          <div style={{ fontSize: "11px", color: "#8899AA", marginTop: "4px" }}>
-            {progress}% completado · {completedLessons.size}/{totalLessons} lecciones
-          </div>
-        </div>
 
-        {/* Module list */}
-        <div style={{ flex: 1, overflowY: "auto", padding: "12px 0" }}>
-          {MODULES.map((m, mi) => (
-            <div key={mi}>
-              {/* Module header */}
+      {/* ── DESKTOP LAYOUT ── */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden", height: "100%" }}>
+
+        {/* ── SIDEBAR (desktop only, hidden on mobile) ── */}
+        <div style={{
+          width: "268px", flexShrink: 0, background: "#0D1525",
+          borderRight: "1px solid #1E3350",
+          display: "flex", flexDirection: "column", overflow: "hidden"
+        }}
+          className="desktop-sidebar"
+        >
+          {/* Logo */}
+          <div style={{ padding: "18px 18px 14px", borderBottom: "1px solid #1E3350" }}>
+            <div style={{ fontSize: "10px", color: "#00D4FF", letterSpacing: "3px", fontWeight: 700, marginBottom: "2px" }}>
+              CYBER-ARENA
+            </div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff" }}>Ruta Unity</div>
+            <div style={{ marginTop: "10px", height: "5px", background: "#1E3350", borderRadius: "3px", overflow: "hidden" }}>
               <div style={{
-                padding: "8px 20px 6px",
-                display: "flex", alignItems: "center", gap: "8px"
-              }}>
-                <span style={{ color: m.color, fontSize: "16px" }}>{m.icon}</span>
-                <div>
-                  <div style={{ color: m.color, fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px" }}>
-                    {m.phase}
-                  </div>
-                  <div style={{ color: "#fff", fontSize: "12px", fontWeight: 600, lineHeight: "1.3" }}>
-                    {m.title}
+                height: "100%", width: `${progress}%`,
+                background: "linear-gradient(90deg, #00D4FF, #00FF9F)",
+                borderRadius: "3px", transition: "width 0.5s ease"
+              }} />
+            </div>
+            <div style={{ fontSize: "11px", color: "#8899AA", marginTop: "4px" }}>
+              {progress}% · {completedLessons.size}/{totalLessons} lecciones
+            </div>
+          </div>
+
+          {/* Module list */}
+          <div style={{ flex: 1, overflowY: "auto", padding: "10px 0" }}>
+            {MODULES.map((m, mi) => (
+              <div key={mi}>
+                <div style={{ padding: "8px 18px 6px", display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ color: m.color, fontSize: "15px" }}>{m.icon}</span>
+                  <div>
+                    <div style={{ color: m.color, fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px" }}>{m.phase}</div>
+                    <div style={{ color: "#fff", fontSize: "12px", fontWeight: 600, lineHeight: "1.3" }}>{m.title}</div>
                   </div>
                 </div>
-              </div>
-
-              {/* Lessons */}
-              {m.lessons.map((l, li) => {
-                const key = `${mi}-${li}`;
-                const isActive = mi === activeModule && li === activeLesson;
-                const isDone = completedLessons.has(key);
-                return (
-                  <button key={li} onClick={() => goToLesson(mi, li)} style={{
-                    width: "100%", textAlign: "left",
-                    padding: "8px 20px 8px 44px",
-                    background: isActive ? `${m.color}15` : "transparent",
-                    border: "none", borderLeft: isActive ? `3px solid ${m.color}` : "3px solid transparent",
-                    cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
-                    transition: "all 0.15s"
-                  }}>
-                    <span style={{
-                      width: "18px", height: "18px", borderRadius: "50%",
-                      background: isDone ? m.color : isActive ? `${m.color}30` : "#1E3350",
-                      border: `1px solid ${isDone || isActive ? m.color : "#2A4060"}`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "9px", color: isDone ? "#0A0E1A" : m.color,
-                      flexShrink: 0, fontWeight: 700
+                {m.lessons.map((l, li) => {
+                  const key = `${mi}-${li}`;
+                  const isActive = mi === activeModule && li === activeLesson;
+                  const isDone = completedLessons.has(key);
+                  return (
+                    <button key={li} onClick={() => goToLesson(mi, li)} style={{
+                      width: "100%", textAlign: "left",
+                      padding: "7px 18px 7px 42px",
+                      background: isActive ? `${m.color}15` : "transparent",
+                      border: "none", borderLeft: isActive ? `3px solid ${m.color}` : "3px solid transparent",
+                      cursor: "pointer", display: "flex", alignItems: "center", gap: "8px",
                     }}>
-                      {isDone ? "✓" : li + 1}
-                    </span>
-                    <span style={{
-                      color: isActive ? "#fff" : isDone ? "#8899AA" : "#8899AA",
-                      fontSize: "12px", lineHeight: "1.4"
-                    }}>
-                      {l.title}
-                    </span>
-                  </button>
-                );
-              })}
-              {mi < MODULES.length - 1 && (
-                <div style={{ height: "1px", background: "#1E3350", margin: "8px 20px" }} />
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── CONTENT ── */}
-      <div ref={contentRef} style={{
-        flex: 1, overflowY: "auto", display: "flex", flexDirection: "column"
-      }}>
-        {/* Module banner */}
-        <div style={{
-          background: `linear-gradient(135deg, ${mod.glow}, transparent 60%)`,
-          borderBottom: "1px solid #1E3350",
-          padding: "24px 36px 20px"
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
-            <span style={{ fontSize: "32px" }}>{mod.icon}</span>
-            <div>
-              <div style={{ color: mod.color, fontSize: "11px", fontWeight: 700, letterSpacing: "2px" }}>
-                {mod.phase} · {mod.duration}
+                      <span style={{
+                        width: "18px", height: "18px", borderRadius: "50%",
+                        background: isDone ? m.color : isActive ? `${m.color}30` : "#1E3350",
+                        border: `1px solid ${isDone || isActive ? m.color : "#2A4060"}`,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontSize: "9px", color: isDone ? "#0A0E1A" : m.color,
+                        flexShrink: 0, fontWeight: 700
+                      }}>
+                        {isDone ? "✓" : li + 1}
+                      </span>
+                      <span style={{ color: isActive ? "#fff" : "#8899AA", fontSize: "12px", lineHeight: "1.4" }}>
+                        {l.title}
+                      </span>
+                    </button>
+                  );
+                })}
+                {mi < MODULES.length - 1 && <div style={{ height: "1px", background: "#1E3350", margin: "6px 18px" }} />}
               </div>
-              <div style={{ color: "#fff", fontSize: "20px", fontWeight: 700 }}>{mod.title}</div>
-              <div style={{ color: "#8899AA", fontSize: "13px" }}>{mod.subtitle}</div>
-            </div>
-            <div style={{ marginLeft: "auto", display: "flex", gap: "8px" }}>
-              {mod.lessons.map((_, li) => (
-                <div key={li} style={{
-                  width: "8px", height: "8px", borderRadius: "50%",
-                  background: completedLessons.has(`${activeModule}-${li}`)
-                    ? mod.color
-                    : li === activeLesson ? `${mod.color}60` : "#1E3350"
-                }} />
-              ))}
-            </div>
+            ))}
           </div>
         </div>
 
-        {/* Lesson content */}
-        <div style={{ padding: "32px 36px", maxWidth: "820px", flex: 1 }}>
-          <LessonView key={lessonKey} lesson={lesson} moduleColor={mod.color} />
-        </div>
+        {/* ── CONTENT AREA ── */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
 
-        {/* Navigation */}
-        <div style={{
-          padding: "20px 36px", borderTop: "1px solid #1E3350",
-          background: "#0D1525", display: "flex", justifyContent: "space-between",
-          alignItems: "center", gap: "12px"
-        }}>
-          <button onClick={() => {
-            if (activeLesson > 0) goToLesson(activeModule, activeLesson - 1);
-            else if (activeModule > 0) goToLesson(activeModule - 1, MODULES[activeModule - 1].lessons.length - 1);
-          }}
-            disabled={activeModule === 0 && activeLesson === 0}
-            style={{
-              background: "transparent", border: "1px solid #1E3350",
-              borderRadius: "8px", color: "#8899AA", padding: "10px 20px",
-              cursor: "pointer", fontSize: "13px",
-              opacity: activeModule === 0 && activeLesson === 0 ? 0.3 : 1
+          {/* ── MOBILE TOP BAR ── */}
+          <div className="mobile-topbar" style={{
+            display: "none",
+            padding: "10px 16px",
+            background: "#0D1525",
+            borderBottom: "1px solid #1E3350",
+            alignItems: "center", gap: "10px", flexShrink: 0
+          }}>
+            <button onClick={() => setDrawerOpen(true)} style={{
+              background: "#1E3350", border: "none", borderRadius: "8px",
+              color: mod.color, padding: "7px 10px", cursor: "pointer",
+              fontSize: "16px", display: "flex", alignItems: "center", gap: "6px",
+              flexShrink: 0
             }}>
-            ← Anterior
-          </button>
-
-          <div style={{ color: "#8899AA", fontSize: "13px", textAlign: "center" }}>
-            {mod.phase} · Lección {activeLesson + 1} de {mod.lessons.length}
+              <span>☰</span>
+            </button>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ color: mod.color, fontSize: "9px", fontWeight: 700, letterSpacing: "1.5px" }}>
+                {mod.phase}
+              </div>
+              <div style={{
+                color: "#fff", fontSize: "13px", fontWeight: 600,
+                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"
+              }}>
+                {lesson.title}
+              </div>
+            </div>
+            {/* Mini progress */}
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
+              <div style={{ width: "40px", height: "4px", background: "#1E3350", borderRadius: "2px", overflow: "hidden" }}>
+                <div style={{
+                  height: "100%", width: `${progress}%`,
+                  background: "linear-gradient(90deg, #00D4FF, #00FF9F)", borderRadius: "2px"
+                }} />
+              </div>
+              <span style={{ color: "#8899AA", fontSize: "10px" }}>{progress}%</span>
+            </div>
           </div>
 
-          <button onClick={nextLesson}
-            disabled={activeModule === MODULES.length - 1 && activeLesson === mod.lessons.length - 1}
-            style={{
+          {/* Module banner */}
+          <div style={{
+            background: `linear-gradient(135deg, ${mod.glow}, transparent 60%)`,
+            borderBottom: "1px solid #1E3350",
+            padding: "16px 20px 14px",
+            flexShrink: 0
+          }}
+            className="module-banner"
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+              <span style={{ fontSize: "28px" }}>{mod.icon}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ color: mod.color, fontSize: "10px", fontWeight: 700, letterSpacing: "2px" }}>
+                  {mod.phase} · {mod.duration}
+                </div>
+                <div style={{ color: "#fff", fontSize: "17px", fontWeight: 700 }}>{mod.title}</div>
+                <div style={{ color: "#8899AA", fontSize: "12px" }}>{mod.subtitle}</div>
+              </div>
+              <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
+                {mod.lessons.map((_, li) => (
+                  <div key={li} style={{
+                    width: "7px", height: "7px", borderRadius: "50%",
+                    background: completedLessons.has(`${activeModule}-${li}`)
+                      ? mod.color : li === activeLesson ? `${mod.color}60` : "#1E3350"
+                  }} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Scrollable lesson content */}
+          <div ref={contentRef} style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch" }}>
+            <div style={{ padding: "20px 20px 8px", maxWidth: "820px", margin: "0 auto" }}
+              className="lesson-padding"
+            >
+              <LessonView key={lessonKey} lesson={lesson} moduleColor={mod.color} />
+            </div>
+          </div>
+
+          {/* ── NAVIGATION FOOTER ── */}
+          <div style={{
+            padding: "12px 16px",
+            borderTop: "1px solid #1E3350",
+            background: "#0D1525",
+            display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px",
+            flexShrink: 0
+          }}>
+            <button onClick={prevLesson} disabled={isFirst} style={{
+              background: "transparent", border: "1px solid #1E3350",
+              borderRadius: "8px", color: "#8899AA", padding: "9px 14px",
+              cursor: isFirst ? "default" : "pointer", fontSize: "13px",
+              opacity: isFirst ? 0.3 : 1, flexShrink: 0
+            }}>
+              ← Anterior
+            </button>
+
+            <div style={{ color: "#8899AA", fontSize: "11px", textAlign: "center", lineHeight: "1.4" }}>
+              <div>{mod.phase}</div>
+              <div>{activeLesson + 1}/{mod.lessons.length}</div>
+            </div>
+
+            <button onClick={nextLesson} disabled={isLast} style={{
               background: mod.color, border: "none",
               borderRadius: "8px", color: "#0A0E1A",
-              padding: "10px 24px", cursor: "pointer",
+              padding: "9px 16px", cursor: isLast ? "default" : "pointer",
               fontSize: "13px", fontWeight: 700,
-              opacity: activeModule === MODULES.length - 1 && activeLesson === mod.lessons.length - 1 ? 0.3 : 1,
-              transition: "opacity 0.2s"
+              opacity: isLast ? 0.3 : 1, flexShrink: 0
             }}>
-            Completar y seguir →
-          </button>
+              Completar →
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile drawer */}
+      {drawerOpen && (
+        <MobileModuleDrawer
+          modules={MODULES}
+          activeModule={activeModule}
+          activeLesson={activeLesson}
+          completedLessons={completedLessons}
+          onSelect={goToLesson}
+          onClose={() => setDrawerOpen(false)}
+        />
+      )}
+
+      {/* ── Responsive CSS ── */}
+      <style>{`
+        * { box-sizing: border-box; }
+
+        /* Mobile: hide desktop sidebar, show mobile topbar */
+        @media (max-width: 640px) {
+          .desktop-sidebar { display: none !important; }
+          .mobile-topbar   { display: flex !important; }
+          .module-banner   { display: none !important; }
+          .lesson-padding  { padding: 16px 16px 8px !important; }
+        }
+
+        /* Tablet: narrower sidebar */
+        @media (min-width: 641px) and (max-width: 900px) {
+          .desktop-sidebar { width: 220px !important; }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #1E3350; border-radius: 4px; }
+      `}</style>
     </div>
   );
 }
-
-export default App;
