@@ -1,6 +1,6 @@
 
 import './App.css';
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 const MODULES = [
   {
     id: 1,
